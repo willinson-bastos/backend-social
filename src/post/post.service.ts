@@ -24,7 +24,7 @@ export class PostService {
     }
 
     async listarPost(): Promise<PostEntity[]> {
-        console.log('listar do postService')
+        //console.log('listar do postService')
         return await this.postRepository.find();
     }
 

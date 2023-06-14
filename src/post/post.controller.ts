@@ -11,20 +11,20 @@ export class PostController {
 
     @Post()
     async criar(@Body() data: PostDto): Promise<PostEntity> {
-        console.log('post executado');
+        //console.log('post executado');
         return this.postService.criarPost(data);
     }
 
     @Get('posts')
     async listar(): Promise<PostEntity[]> {
-        console.log('get executado');
+        //console.log('get executado');
         return this.postService.listarPost();
     }
 
     @Delete(':id')
     async deletar(@Param('id') id: number): Promise<void> {
     try{
-        console.log('delete executado backend');
+        //console.log('delete executado backend');
         return this.postService.deletarPost(id);
     } catch(error){
         console.error('Erro ao excluir post', error);
