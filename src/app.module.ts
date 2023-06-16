@@ -5,6 +5,7 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
 import { MessagesModule } from './messages/messages.module';
+import { SocketGateway } from './socket/socket.gateway';
 
 
 
@@ -14,7 +15,7 @@ import { MessagesModule } from './messages/messages.module';
 @Module({
   imports: [AuthModule, PostModule, MessagesModule],
   controllers: [AppController],
-  providers: [AppService,],
+  providers: [AppService, SocketGateway],
 })
 export class AppModule {
 

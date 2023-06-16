@@ -1,43 +1,57 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
-import { Message } from './entities/message.entity';
 import { Conversa } from './entities/conversa.entity';
 import { Repository } from 'typeorm';
+import {Socket} from 'socket.io';
+import { Message } from './entities/message.entity';
 
 @Injectable()
 export class MessagesService {
-  messages: Message[] = [{name: 'Servidor', text: 'Mensagem inicial do server, olá!'}];
-  clientToUser = {};
+
+  private users: {id:number, socket:Socket}[] = [];
 
   constructor(
     @Inject('CHAT_REPOSITORY')
-  private chatRepository: Repository<Conversa>,
+  private chatRepository: Repository<Conversa>
   ){}
 
-  identify(name: string, clientId: string){
-    this.clientToUser[clientId] = name;
-
-    return Object.values(this.clientToUser);
+  //Login no WebSocket
+  login(socket: Socket, id: number){
+    console.log('loginChat');
+    //console.log(socket);
+    this.users = this.users.filter(user=> user.id != id);
+    this.users.push({id,socket});
   }
 
-  create(createMessageDto: CreateMessageDto) {
-    const message = {...createMessageDto};
-    this.messages.push(createMessageDto);//TO DO: improve
-    
-    return message;
+  //Logout no WebSocket
+  logout(socket: Socket, id: number){
+    this.users = this.users.filter(user=> user.id != id);
   }
 
-  findAll() {
-    return this.messages;
+  //Envio via WebSocket
+  sendMessage(idSender: number, idReceiver: number, message: string){
+    var allUsers = this.users;
+    const socketReceiver = this.users.find(user => user.id == idReceiver);
+    if(!socketReceiver) return ;
+    //console.log(socketReceiver);
+    var fullMessage = new Message();
+    fullMessage.idReceiver = idReceiver
+    fullMessage.idSender = idSender
+    fullMessage.text = message
+    socketReceiver.socket.emit('message', fullMessage);
   }
-
+  
+  //Envio para a database
   async newMessage(messageData: CreateMessageDto): Promise<Conversa>{
     let messageInChat = new Conversa();
-    messageInChat.name = messageData.name;
+    messageInChat.idSender = messageData.idSender;
+    messageInChat.idReceiver = messageData.idReceiver;
     messageInChat.text = messageData.text;
+    this.sendMessage(messageInChat.idSender, messageInChat.idReceiver, messageInChat.text);
     return await this.chatRepository.save(messageInChat);
   }
 
+  //Leitura da database
   async listMessages():Promise<Conversa[]>{
     return await this.chatRepository.find();
   }

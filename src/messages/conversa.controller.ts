@@ -12,14 +12,15 @@ export class ConversaController {
 
 
     @Post()
-    async newMessage(@Body() data: CreateMessageDto): Promise<Message> {
+    async newMessage(@Body() data: CreateMessageDto){
         return this.messagesService.newMessage(data);
     }
-
+   
     @Get()
     async listMessages(): Promise<Conversa[]> {
         return this.messagesService.listMessages();
     }
+
 
     
 

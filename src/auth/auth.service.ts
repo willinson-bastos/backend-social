@@ -29,6 +29,9 @@ export class AuthService {
         const token = this.jwtService.sign(payload);
         console.log(token);
         this.tokenService.save(token, usuario.email);
+
+        //Fazer um EMIT aqui!
+
         return {
           access_token: token,
           user: usuario
