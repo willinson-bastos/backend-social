@@ -17,8 +17,6 @@ export class MessagesService {
 
   //Login no WebSocket
   login(socket: Socket, id: number){
-    console.log('loginChat');
-    //console.log(socket);
     this.users = this.users.filter(user=> user.id != id);
     this.users.push({id,socket});
   }
@@ -33,7 +31,6 @@ export class MessagesService {
     var allUsers = this.users;
     const socketReceiver = this.users.find(user => user.id == idReceiver);
     if(!socketReceiver) return ;
-    //console.log(socketReceiver);
     var fullMessage = new Message();
     fullMessage.idReceiver = idReceiver
     fullMessage.idSender = idSender

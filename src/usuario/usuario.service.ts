@@ -55,7 +55,6 @@ export class UsuarioService {
         usuarioUpdate.nome = usuario.nome;
         usuarioUpdate.email = usuario.email;
         usuarioUpdate.senha = bcrypt.hashSync(usuario.senha, 8);
-        console.log(usuarioUpdate);
         return await this.usuarioRepository.save(usuarioUpdate);
     }
 
@@ -64,7 +63,6 @@ export class UsuarioService {
         if (!usuarioDelete) {
             throw new NotFoundException('Usuário não encontrado!');
         }
-        console.log('Usuário deletado.');
         await this.usuarioRepository.delete(id);
     }
 
