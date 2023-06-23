@@ -25,18 +25,6 @@ export class UsuarioService {
 
         console.log(usuario);
         return await this.usuarioRepository.save(usuario);
-            /*.then((result) => {
-                return <ResultadoDto>{
-                    status: true,
-                    mensagem: "Usuário cadastrado com sucesso!"
-                }
-            })
-            .catch((error) => {
-                return <ResultadoDto>{
-                    status: false,
-                    mensagem: "Erro ao cadastrar usuário!"
-                }
-            });*/
     }
 
     async listarUmEmail(email: string): Promise<Usuario | undefined> {
