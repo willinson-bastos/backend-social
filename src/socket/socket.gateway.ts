@@ -3,7 +3,7 @@ import { MessagesService } from 'src/messages/messages.service';
 import { Server, Socket } from 'socket.io';
 
 
-@WebSocketGateway({ cors: { origin: 'http://localhost:4200', credentials: true } } )
+@WebSocketGateway({ cors: { origin: '*', credentials: true } } )
 export class SocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
     
     @WebSocketServer()
